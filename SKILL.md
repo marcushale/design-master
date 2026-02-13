@@ -190,6 +190,7 @@ Bold, full-bleed images. Let photos do the heavy lifting.
 - Hero: Full-screen background image with text overlay
 - Section breaks: Photo strips or editorial image grids
 - Cards: Image-first with text below
+- **Color limit: 3 max** — Background, text, one accent. Photos provide the color.
 - *Starting point for:* Lifestyle, travel, food, fashion, real estate
 - *Twist it:* Duotone photos, masked shapes, mixed with illustration
 
@@ -200,6 +201,7 @@ Hand-drawn meets interactive physics. Think "Crayon Physics Deluxe" — fun and 
 - Motion: Elements that bounce, swing, stack — real physics simulation
 - Palette: Craft paper backgrounds, muted crayons, chalkboard aesthetics
 - Details: Scribbled annotations, crossed-out text, "work in progress" feel
+- **Color limit: 4-5 max** — Paper/chalk background + 2-3 muted crayon colors. NO saturated primaries.
 - *Starting point for:* Creative tools, indie games, educational, maker brands
 - *Key tension:* Playful execution + serious/smart content = sophisticated fun
 - *Twist it:* Combine with engineering diagrams, architectural sketches, or notebook margins
@@ -209,6 +211,7 @@ Type IS the visual. Massive, expressive, confident.
 - Hero: Oversized display type (150px+), maybe animated
 - Color blocking: Sections in bold contrasting colors
 - Minimal imagery — let the words speak
+- **Color limit: 2-3 max** — Bold, high-contrast. One dominant, one accent, optional neutral.
 - *Starting point for:* Agencies, portfolios, statements, manifestos
 - *Twist it:* Variable fonts, kinetic type, mixed weights/styles
 
@@ -217,6 +220,7 @@ Tactile, physical feeling. Paper, grain, depth.
 - Backgrounds: Paper textures, gradients, grain overlays
 - Shadows: Realistic drop shadows, layered elements
 - Details: Subtle noise, halftone patterns, embossed effects
+- **Color limit: 3-4 max** — Monochromatic or analogous. Texture provides variety, not color.
 - *Starting point for:* Luxury, craft, artisan, print-inspired
 - *Twist it:* Brutalist textures, industrial materials, unexpected surfaces
 
@@ -227,6 +231,7 @@ Technical precision as visual interest. Like Stripe's touchable pincushion needl
 - Motion: Procedural, code-driven animations — NOT flashy neon or "AI purple"
 - Interactions: Hover reveals data, click triggers calculations, elements connect with lines
 - Details: Grid overlays, coordinate markers, performance metrics
+- **Color limit: 2 max** — Dark background + ONE accent color (teal, green, or blue). Monochromatic is key.
 - *Starting point for:* Developer tools, APIs, infrastructure, fintech, data products
 - *Anti-pattern:* Neon colors, purple gradients, particle explosions — these scream "AI generated"
 - *Reference:* Stripe's homepage (pincushion, gradient mesh), Linear, Vercel
@@ -238,6 +243,7 @@ Magazine-style asymmetry. Intentional tension.
 - Layout: Broken grids, overlapping elements, varied columns
 - Images: Mixed sizes, some bleed off edges
 - Typography: Pull quotes, varied sizes, margin notes
+- **Color limit: 3-4 max** — Sophisticated palette. One accent (often red), rest neutral.
 - *Starting point for:* Publications, blogs, cultural, journalism
 - *CRITICAL:* Must collapse gracefully on mobile — complex grids become single column, margin labels become inline, all content stays within viewport
 - *Twist it:* Newspaper style, zine aesthetic, mixed media collage
@@ -339,6 +345,62 @@ Address review findings systematically:
 2. **Squint Test** — Hierarchy visible? (YES required)
 3. **Signature Test** — 5 intentional choices identifiable?
 4. **Token Test** — Variables sound like this product?
+
+### Phase 7: PRE-DEPLOY QA (MANDATORY)
+
+**⚠️ DO NOT SKIP THIS.** Every deploy must pass these checks.
+
+**Desktop Verification (5 min):**
+1. Open site in browser at 1440px width
+2. Scroll entire page — check section spacing, alignment, visual rhythm
+3. Click every navigation link — verify they work
+4. Click every CTA/button — verify hover states
+5. Check footer links
+
+**Mobile Verification (5 min) — CRITICAL:**
+1. Open browser DevTools (F12 or Cmd+Option+I)
+2. Toggle device toolbar (Cmd+Shift+M or click phone icon)
+3. Select "iPhone 12 Pro" or similar (390px width)
+4. **Test hamburger menu:**
+   - [ ] Hamburger icon visible?
+   - [ ] Click → menu opens full-screen?
+   - [ ] Click link → menu closes AND navigates?
+   - [ ] Click X/hamburger → menu closes?
+5. **Scroll test:**
+   - [ ] All content visible (nothing cut off)?
+   - [ ] Text readable (16px+ body)?
+   - [ ] Buttons tappable (44px+ touch targets)?
+   - [ ] No horizontal scroll?
+6. **Layout collapse:**
+   - [ ] Multi-column → single column?
+   - [ ] Cards stack vertically?
+   - [ ] No overlapping elements?
+
+**Functional Verification (3 min):**
+1. Open browser console (Cmd+Option+J)
+2. Reload page — check for JavaScript errors (red text)
+3. If errors exist → FIX BEFORE DEPLOY
+4. Test any interactive elements (forms, animations, toggles)
+
+**Cross-Browser Spot Check (2 min):**
+- If you built in Chrome, quick-check in Safari (or vice versa)
+- Mobile: Test in both iOS Safari and Chrome if possible
+
+**The "Fresh Eyes" Test:**
+Before final deploy, take a 2-minute break. Come back and view the site as if seeing it for the first time. Does anything feel off?
+
+**Deployment Gate:**
+```
+□ Desktop scroll check passed
+□ Mobile hamburger menu works
+□ Mobile layout collapses properly  
+□ No console errors
+□ Cross-browser spot check done
+□ Fresh eyes review done
+
+ALL BOXES CHECKED → Deploy
+ANY BOX UNCHECKED → Fix first
+```
 
 ---
 
@@ -754,6 +816,163 @@ On phones, thumbs reach different areas with different effort:
 - Subtle fade-in animation
 - Backdrop click to close
 
+### Mobile Nav Implementation (COPY-PASTE READY)
+
+**⚠️ USE THIS EXACT PATTERN** — It's tested and works. Don't improvise.
+
+**HTML Structure:**
+```html
+<header>
+  <div class="container">
+    <a href="/" class="logo">Brand</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact" class="cta">Contact</a>
+    </nav>
+  </div>
+</header>
+```
+
+**CSS (CRITICAL — class names must match exactly):**
+```css
+/* Desktop nav */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+}
+
+.nav-links .cta {
+  background: var(--accent);
+  color: white;  /* EXPLICIT — never inherit */
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.nav-links .cta:hover {
+  opacity: 0.9;
+}
+
+/* Hamburger toggle — hidden on desktop */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;  /* Above overlay */
+}
+
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  margin: 5px 0;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+/* Hamburger → X animation */
+.nav-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.nav-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile breakpoint */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: block;
+  }
+  
+  .nav-links {
+    display: none;  /* Hidden by default */
+    position: fixed;
+    inset: 0;
+    background: var(--background);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    z-index: 1000;
+  }
+  
+  .nav-links.active {
+    display: flex;  /* Shown when active */
+  }
+  
+  .nav-links a {
+    font-size: 1.5rem;
+    color: var(--text);
+  }
+  
+  .nav-links .cta {
+    padding: 1rem 2rem;
+    font-size: 1.25rem;
+  }
+}
+```
+
+**JavaScript (REQUIRED — put before closing </body>):**
+```javascript
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  
+  toggle.addEventListener('click', () => {
+    const isOpen = toggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+    toggle.setAttribute('aria-expanded', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  
+  // Close menu when link clicked
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      toggle.classList.remove('active');
+      navLinks.classList.remove('active');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+</script>
+```
+
+**Critical Rules:**
+1. **Class names must match** — CSS uses `.nav-links`, JS queries `.nav-links`, HTML has `class="nav-links"`
+2. **Z-index hierarchy** — Toggle (1001) > Nav overlay (1000) > Header (100)
+3. **Explicit CTA colors** — `.nav-links .cta { color: white; }` — never rely on inheritance
+4. **Body scroll lock** — Prevent background scroll when menu open
+5. **Links close menu** — Every nav link tap should close the overlay
+
+**Testing (MANDATORY before deploy):**
+1. Open browser DevTools → Toggle device toolbar (mobile view)
+2. Click hamburger → Menu opens full-screen
+3. Click a nav link → Menu closes, navigates
+4. Click hamburger again → Toggle animates to X
+5. Resize to desktop → Menu reverts to horizontal row
+
 **Implementation Checklist:**
 - [ ] Menu toggle button visible on mobile (44×44px minimum)
 - [ ] Toggle has aria-label and aria-expanded
@@ -768,6 +987,9 @@ On phones, thumbs reach different areas with different effort:
 - ❌ Tiny hamburger icon (<44px)
 - ❌ Menu that doesn't close when link tapped
 - ❌ No visual feedback on toggle
+- ❌ CSS selector mismatch (using `nav` in CSS but `class="nav-links"` in HTML)
+- ❌ Forgetting to add the JavaScript
+- ❌ CTA buttons inheriting wrong text color
 
 ### Performance (Critical for Mobile)
 
