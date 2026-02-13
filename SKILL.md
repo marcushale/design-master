@@ -155,18 +155,141 @@ Before shipping ANY single-page site, verify ALL of these:
 - [ ] Hero has generous vertical padding (min 6rem top/bottom)
 - [ ] Hero creates immediate visual impact when page loads
 
-**Icons (CRITICAL):**
-- [ ] NEVER use native emoji (💭🤝🌱) — they look amateur and render inconsistently
-- [ ] Always use SVG icons (Lucide, Heroicons, Phosphor, or custom)
-- [ ] Icons should be monochrome and match the design system
-- [ ] If you don't have icons, use NO icons — blank is better than emoji
+**⛔ ICONS — ABSOLUTE RULE (NO EXCEPTIONS):**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  NEVER USE NATIVE EMOJI AS ICONS                            │
+│  ❌ 🔥 📖 👕 📝 🧠 🤝 — These look amateur and inconsistent │
+│  ✅ Use SVG icons from Lucide, Heroicons, Phosphor          │
+│  ✅ Or use NO icons at all — blank is better than emoji     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+This is a **zero-tolerance rule**. Native emoji:
+- Render differently across platforms/browsers
+- Cannot be styled (color, size inconsistencies)
+- Look unprofessional and "template-y"
+- Immediately mark a design as amateur
+
+**Icon Resources (Free, Production-Ready):**
+| Library | Style | URL |
+|---------|-------|-----|
+| Lucide | Minimal stroke | lucide.dev |
+| Heroicons | Tailwind-style | heroicons.com |
+| Phosphor | Flexible weights | phosphoricons.com |
+| Feather | Light stroke | feathericons.com |
+
+**If you catch yourself typing an emoji in HTML, STOP and find an SVG instead.**
 
 **Typography Hierarchy:**
 - [ ] One display font for headings
 - [ ] One body font for text
 - [ ] Clear size distinction between H1 > H2 > H3 > body
 
-**Footer Minimalism:**
+**Footer Patterns (Auderon Standard):**
+
+**Option 1: Simple Footer** (for minimal sites)
+Single row: Logo/brand left, links + copyright right. No section headers.
+```css
+footer {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+}
+footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-links {
+  display: flex;
+  gap: 2rem;
+}
+.footer-links a, .footer-copyright {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+```
+
+**Option 2: Full Footer** (for complex sites with sitemap)
+Two parts: Main footer with link columns + bottom bar with copyright/legal.
+```html
+<footer>
+  <!-- Main Footer: 4-column grid -->
+  <div class="footer-main">
+    <div class="footer-brand">
+      <img src="/logo.svg" alt="Brand">
+      <p>Brief tagline here.</p>
+    </div>
+    <div class="footer-column">
+      <h4>EXPLORE</h4>
+      <a href="/blog">Blog</a>
+      <a href="/about">About</a>
+    </div>
+    <div class="footer-column">
+      <h4>COMPANY</h4>
+      <a href="/contact">Contact</a>
+      <a href="/careers">Careers</a>
+    </div>
+    <div class="footer-column">
+      <h4>CONNECT</h4>
+      <a href="#">Twitter</a>
+      <a href="#">Discord</a>
+    </div>
+  </div>
+  <!-- Bottom Bar: copyright + legal -->
+  <div class="footer-bottom">
+    <span>© 2026 Brand. All Rights Reserved.</span>
+    <div class="footer-legal">
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms of Use</a>
+    </div>
+  </div>
+</footer>
+```
+
+```css
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 4rem;
+  padding: 4rem 0;
+}
+@media (max-width: 768px) {
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .footer-brand { grid-column: span 2; }
+}
+.footer-column h4 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 1.5rem;
+}
+.footer-column a {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.footer-legal { display: flex; gap: 1.5rem; }
+```
+
+**Footer Anti-patterns:**
 - [ ] Single row layout (logo left, links right)
 - [ ] No section headers ("LINKS", "FOLLOW US") — just show them
 - [ ] Copyright inline with links, not separate row
@@ -1166,17 +1289,49 @@ Every interactive element needs: Default, Hover, Focus, Active, Disabled, Loadin
 - ❌ Grid columns that don't collapse properly on mobile
 - ❌ Complex editorial layouts that break on smaller screens
 - ❌ Body text below 16px (14px absolute minimum, 16px preferred)
+- ❌ Debug comments visible to users (cache-bust, TODO, version comments outside `<style>` tags)
+- ❌ Badges/tags inline with content instead of positioned on card corner
+
+### Badge/Tag Positioning (Cards)
+
+When adding "NEW", "BESTSELLER", "SALE" badges to cards:
+```css
+.card {
+  position: relative;  /* Required for absolute child */
+}
+.card-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;  /* or right: 0.75rem */
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  background: var(--accent);
+  color: var(--bg);
+  z-index: 1;
+}
+```
+**Never put badges inline with card content** — they should float in the corner of the card image/container.
 
 ### Section Spacing & Structure (MANDATORY)
 
+**⚠️ CRITICAL: Mobile vs Desktop Spacing**
+Desktop spacing looks great on desktop, but creates awkward empty voids on mobile. **Always use responsive padding.**
+
 **Minimum Section Padding:**
-- Mobile: `padding: 5rem 1.5rem` minimum (80px vertical)
-- Desktop: `padding: 8rem 2rem` minimum (128px vertical)
-- Hero sections: `padding: 10rem+ 2rem` (160px+ vertical) — heroes need to BREATHE
-- Large statement sections: `padding: 10rem 2rem` (160px vertical)
+- Mobile: `padding: 3rem 1.5rem` (48px vertical) — compact, content fills viewport
+- Desktop: `padding: 8rem 2rem` (128px vertical) — generous breathing room
+
+**Hero Spacing (Responsive Required):**
+- Mobile: `padding: 4rem 1.5rem 3rem` — tight top, content visible immediately
+- Desktop: `padding: 8rem 2rem 6rem` — heroes need to BREATHE on large screens
+- **Never use fixed large values like `8rem` without a media query** — they create empty voids on mobile
 
 **The Stripe Standard:**
-Look at Stripe.com — notice how sections have ~120-160px of vertical padding on desktop. Content floats in generous whitespace. This is the target, not cramped information density.
+Look at Stripe.com — notice how sections have ~120-160px of vertical padding on desktop, but MUCH less on mobile. Content floats in generous whitespace on desktop while staying compact on mobile.
 
 **Container Rules:**
 ```css
@@ -1189,17 +1344,24 @@ Look at Stripe.com — notice how sections have ~120-160px of vertical padding o
   .container { padding: 0 2rem; }
 }
 
-/* Section padding - GENEROUS */
+/* Section padding - RESPONSIVE */
 section {
-  padding: 5rem 0;  /* Mobile minimum */
+  padding: 3rem 0;  /* Mobile: compact */
 }
 @media (min-width: 768px) {
-  section { padding: 8rem 0; }  /* Desktop minimum */
+  section { padding: 8rem 0; }  /* Desktop: generous */
 }
+
+/* Hero padding - RESPONSIVE */
 .hero {
-  padding: 10rem 0 8rem;  /* Heroes need MORE */
+  padding: 4rem 0 3rem;  /* Mobile: tight, content visible */
+}
+@media (min-width: 768px) {
+  .hero { padding: 8rem 0 6rem; }  /* Desktop: breathes */
 }
 ```
+
+**Common Mistake:** Using `padding: 8rem 0` without media queries creates massive empty space on mobile. The circled area in mobile screenshots is almost always this bug.
 
 **Visual Hierarchy Requirements:**
 1. **Clear section boundaries** — Each section should be obviously distinct
