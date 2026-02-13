@@ -553,6 +553,58 @@ button:active { transform: scale(0.98); }
 - No scrolljacking
 - No layout shift (CLS)
 - Use `transform` and `opacity` only (avoid animating width/height/top/left)
+- Add `will-change` only on elements that will animate
+- Use `translate3d()` for hardware acceleration
+- Use `passive: true` on scroll listeners
+
+### Performance Animation Patterns
+
+**Hardware-Accelerated Transitions:**
+```css
+.element {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), 
+              opacity 0.35s ease, 
+              box-shadow 0.35s ease;
+  will-change: transform;
+}
+
+/* AVOID: */
+transition: all 0.3s;  /* Too broad, triggers full repaint */
+transition: width 0.3s, height 0.3s;  /* Layout thrashing */
+```
+
+**Parallax with RAF:**
+```javascript
+const parallaxElements = document.querySelectorAll('[data-parallax]');
+let rafId = null;
+
+const updateParallax = () => {
+  const scrollY = window.scrollY;
+  parallaxElements.forEach(el => {
+    const speed = Number(el.dataset.parallax) || 0.1;
+    el.style.transform = `translate3d(0, ${scrollY * speed * -1}px, 0)`;
+  });
+  rafId = null;
+};
+
+window.addEventListener('scroll', () => {
+  if (!rafId) rafId = requestAnimationFrame(updateParallax);
+}, { passive: true });
+```
+
+**Scroll Reveal with IntersectionObserver:**
+```javascript
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.18, rootMargin: '0px 0px -10% 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+```
 
 ---
 
