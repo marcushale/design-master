@@ -214,10 +214,12 @@ Tactile, physical feeling. Paper, grain, depth.
 
 **APPROACH E: Motion & Interaction**
 Movement creates interest. The page comes alive.
-- Hero: Animated elements, particle effects, video
-- Scroll effects: Parallax, reveal animations, morphing
-- Hover states: Dramatic transformations
+- Hero: Animated elements, particle effects, video (NOT 100vh static)
+- Scroll effects: Parallax, reveal animations, morphing elements
+- Hover states: Dramatic transformations, scale, color shifts
+- Continuous motion: Floating elements, subtle loops, cursor followers
 - *Best for:* Tech, creative, portfolios, experiences
+- *Requirement:* Must have VISIBLE motion on page load — not just hover states
 
 **APPROACH F: Editorial & Grid**
 Magazine-style asymmetry. Intentional tension.
@@ -225,6 +227,7 @@ Magazine-style asymmetry. Intentional tension.
 - Images: Mixed sizes, some bleed off edges
 - Typography: Pull quotes, varied sizes, margin notes
 - *Best for:* Publications, blogs, cultural, journalism
+- *CRITICAL:* Must collapse gracefully on mobile — complex grids become single column, margin labels become inline, all content stays within viewport
 
 ---
 
@@ -853,6 +856,77 @@ Every interactive element needs: Default, Hover, Focus, Active, Disabled, Loadin
 - ❌ Cluttered footer with section headers (keep minimal, single row)
 - ❌ Mobile nav that just disappears (must transform to hamburger/drawer)
 - ❌ "Too clean" — all flat colors, no photos/textures/visual moments
+- ❌ 100vh heroes (hero should show content below to invite scrolling)
+- ❌ Floating labels/metadata disconnected from their content
+- ❌ Grid columns that don't collapse properly on mobile
+- ❌ Complex editorial layouts that break on smaller screens
+- ❌ Body text below 16px (14px absolute minimum, 16px preferred)
+
+### Section Spacing & Structure (MANDATORY)
+
+**Minimum Section Padding:**
+- Mobile: `padding: 4rem 1.5rem` minimum (64px vertical)
+- Desktop: `padding: 5rem 2rem` minimum (80px vertical)
+- Large/hero sections: `padding: 6rem+ 2rem` (96px+ vertical)
+
+**Container Rules:**
+```css
+.container {
+  max-width: 1200px;  /* Consistent across ALL sections */
+  margin: 0 auto;
+  padding: 0 1.5rem;  /* Mobile */
+}
+@media (min-width: 768px) {
+  .container { padding: 0 2rem; }
+}
+```
+
+**Visual Hierarchy Requirements:**
+1. **Clear section boundaries** — Each section should be obviously distinct
+2. **Consistent container width** — Don't change max-width between sections
+3. **Logical grouping** — Related content stays together, unrelated content separated
+4. **Readable line lengths** — Body text max-width: 65-75ch
+
+**Mobile Collapse Rules:**
+- Multi-column layouts MUST collapse to single column
+- Grid elements stack vertically
+- Floating/offset elements become inline
+- Editorial "margin notes" become inline callouts
+- Navigation transforms (never disappears)
+
+### Hero Height Guidelines
+
+**Don't use `min-height: 100vh`** — it hides content and feels static.
+
+**Instead:**
+```css
+/* Good: Shows content below, invites scrolling */
+.hero {
+  padding: 8rem 0 6rem;  /* Generous but not viewport-filling */
+}
+
+/* Good: Responsive height that adapts */
+.hero {
+  min-height: 70vh;
+  max-height: 800px;
+}
+```
+
+**Hero should:**
+- Show a glimpse of content below (invites scrolling)
+- Scale reasonably on different viewports
+- Not trap users in a static "slide"
+
+### Typography Minimums (MANDATORY)
+
+| Element | Minimum Size | Preferred |
+|---------|-------------|-----------|
+| Body text | 16px | 16-18px |
+| Secondary text | 14px | 14-16px |
+| Captions/labels | 12px | 12-14px |
+| Never below | 12px | — |
+
+**Why:** Text below 16px becomes difficult to read on mobile devices. Smaller text should only be used for tertiary information (timestamps, legal text), never for body content.
 
 ### Behavioral
 - ❌ Scrolljacking
@@ -893,11 +967,16 @@ Every interactive element needs: Default, Hover, Focus, Active, Disabled, Loadin
 **Structural Consistency:**
 - [ ] All sections use same container max-width
 - [ ] Sections have alternating backgrounds (visual rhythm)
+- [ ] Sections have adequate padding (4rem+ vertical minimum)
 - [ ] Header/footer visually distinct from content
 - [ ] Centered sections have ALL elements centered
 - [ ] No native emoji — SVG icons only
 - [ ] Filled buttons have light text on colored backgrounds
 - [ ] Mobile navigation transforms (hamburger/drawer), not disappears
+- [ ] Body text is 16px minimum (14px only for tertiary info)
+- [ ] Hero is NOT 100vh (shows content below to invite scrolling)
+- [ ] Complex layouts collapse properly on mobile (single column)
+- [ ] No floating/orphaned elements on mobile
 
 **Visual Interest:**
 - [ ] Chose ONE visual approach (A-F) that matches brand
