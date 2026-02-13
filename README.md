@@ -179,7 +179,9 @@ Clean design is good. **Too clean is sterile.** Every site needs visual characte
 **The Problem:**
 Sites that are structurally correct but feel "undesigned" — all flat colors, no photography, no texture, no visual moments. They're correct but forgettable.
 
-**IMPORTANT: Variety is mandatory.** Don't apply the same treatment to every site. Choose ONE primary approach that matches the brand personality:
+**IMPORTANT: These are STARTING POINTS, not a menu.** Don't just pick one and execute it literally. Use these as inspiration to create something UNIQUE to your specific product. The best designs combine elements, subvert expectations, or invent entirely new approaches based on the brand's personality.
+
+**The goal: Every site should feel like it could ONLY exist for this specific product.**
 
 ---
 
@@ -188,7 +190,8 @@ Bold, full-bleed images. Let photos do the heavy lifting.
 - Hero: Full-screen background image with text overlay
 - Section breaks: Photo strips or editorial image grids
 - Cards: Image-first with text below
-- *Best for:* Lifestyle, travel, food, fashion, real estate
+- *Starting point for:* Lifestyle, travel, food, fashion, real estate
+- *Twist it:* Duotone photos, masked shapes, mixed with illustration
 
 **APPROACH B: Illustration & Custom Graphics**
 Hand-crafted visual elements throughout.
@@ -196,21 +199,24 @@ Hand-crafted visual elements throughout.
 - Accents: Hand-drawn arrows, underlines, doodles
 - Icons: Custom illustrated icons (not icon libraries)
 - Section dividers: Wavy lines, custom shapes
-- *Best for:* Playful brands, startups, creative agencies, kids
+- *Starting point for:* Playful brands, startups, creative agencies, kids
+- *Twist it:* 3D illustrations, animated characters, collage style
 
 **APPROACH C: Bold Typography & Color**
 Type IS the visual. Massive, expressive, confident.
 - Hero: Oversized display type (150px+), maybe animated
 - Color blocking: Sections in bold contrasting colors
 - Minimal imagery — let the words speak
-- *Best for:* Agencies, portfolios, statements, manifestos
+- *Starting point for:* Agencies, portfolios, statements, manifestos
+- *Twist it:* Variable fonts, kinetic type, mixed weights/styles
 
 **APPROACH D: Texture & Material**
 Tactile, physical feeling. Paper, grain, depth.
 - Backgrounds: Paper textures, gradients, grain overlays
 - Shadows: Realistic drop shadows, layered elements
 - Details: Subtle noise, halftone patterns, embossed effects
-- *Best for:* Luxury, craft, artisan, print-inspired
+- *Starting point for:* Luxury, craft, artisan, print-inspired
+- *Twist it:* Brutalist textures, industrial materials, unexpected surfaces
 
 **APPROACH E: Motion & Interaction**
 Movement creates interest. The page comes alive.
@@ -218,16 +224,35 @@ Movement creates interest. The page comes alive.
 - Scroll effects: Parallax, reveal animations, morphing elements
 - Hover states: Dramatic transformations, scale, color shifts
 - Continuous motion: Floating elements, subtle loops, cursor followers
-- *Best for:* Tech, creative, portfolios, experiences
-- *Requirement:* Must have VISIBLE motion on page load — not just hover states
+- *Starting point for:* Tech, creative, portfolios, experiences
+- *Requirement:* Must have VISIBLE, INTERESTING motion on page load — not just hover states
+- *Twist it:* WebGL, 3D transforms, physics-based animations, audio-reactive
 
 **APPROACH F: Editorial & Grid**
 Magazine-style asymmetry. Intentional tension.
 - Layout: Broken grids, overlapping elements, varied columns
 - Images: Mixed sizes, some bleed off edges
 - Typography: Pull quotes, varied sizes, margin notes
-- *Best for:* Publications, blogs, cultural, journalism
+- *Starting point for:* Publications, blogs, cultural, journalism
 - *CRITICAL:* Must collapse gracefully on mobile — complex grids become single column, margin labels become inline, all content stays within viewport
+- *Twist it:* Newspaper style, zine aesthetic, mixed media collage
+
+---
+
+**Creating Your Own Approach:**
+
+The best designs don't fit neatly into categories. To create something truly unique:
+
+1. **Start with the product's world** — What materials, textures, colors exist in this domain?
+2. **Find unexpected references** — Look outside web design. Architecture, fashion, print, nature.
+3. **Identify a signature element** — What ONE thing could only exist for THIS product?
+4. **Combine influences** — Photography + bold type? Editorial + motion? Texture + illustration?
+5. **Break a rule intentionally** — What convention can you subvert that reinforces the brand?
+
+**Examples of hybrid/custom approaches:**
+- Linear: Dark UI + subtle gradients + micro-animations + engineering precision
+- Notion: Illustration + playful type + generous whitespace + tool-like simplicity
+- Stripe: Gradients + bold statements + interactive demos + technical credibility
 
 ---
 
@@ -235,6 +260,7 @@ Magazine-style asymmetry. Intentional tension.
 ❌ Adding a 5% opacity photo behind text and calling it "visual interest"
 ❌ Applying the same subtle treatment to every site
 ❌ Textures so faint they're invisible
+❌ Picking an approach and executing it literally without customization
 
 **The Test:** Would a non-designer notice the visual character? If they'd say "it's just a white page with text" → you haven't added enough.
 
@@ -865,9 +891,13 @@ Every interactive element needs: Default, Hover, Focus, Active, Disabled, Loadin
 ### Section Spacing & Structure (MANDATORY)
 
 **Minimum Section Padding:**
-- Mobile: `padding: 4rem 1.5rem` minimum (64px vertical)
-- Desktop: `padding: 5rem 2rem` minimum (80px vertical)
-- Large/hero sections: `padding: 6rem+ 2rem` (96px+ vertical)
+- Mobile: `padding: 5rem 1.5rem` minimum (80px vertical)
+- Desktop: `padding: 8rem 2rem` minimum (128px vertical)
+- Hero sections: `padding: 10rem+ 2rem` (160px+ vertical) — heroes need to BREATHE
+- Large statement sections: `padding: 10rem 2rem` (160px vertical)
+
+**The Stripe Standard:**
+Look at Stripe.com — notice how sections have ~120-160px of vertical padding on desktop. Content floats in generous whitespace. This is the target, not cramped information density.
 
 **Container Rules:**
 ```css
@@ -879,6 +909,17 @@ Every interactive element needs: Default, Hover, Focus, Active, Disabled, Loadin
 @media (min-width: 768px) {
   .container { padding: 0 2rem; }
 }
+
+/* Section padding - GENEROUS */
+section {
+  padding: 5rem 0;  /* Mobile minimum */
+}
+@media (min-width: 768px) {
+  section { padding: 8rem 0; }  /* Desktop minimum */
+}
+.hero {
+  padding: 10rem 0 8rem;  /* Heroes need MORE */
+}
 ```
 
 **Visual Hierarchy Requirements:**
@@ -886,6 +927,7 @@ Every interactive element needs: Default, Hover, Focus, Active, Disabled, Loadin
 2. **Consistent container width** — Don't change max-width between sections
 3. **Logical grouping** — Related content stays together, unrelated content separated
 4. **Readable line lengths** — Body text max-width: 65-75ch
+5. **Room to breathe** — When in doubt, add MORE whitespace, not less
 
 **Mobile Collapse Rules:**
 - Multi-column layouts MUST collapse to single column
@@ -894,28 +936,44 @@ Every interactive element needs: Default, Hover, Focus, Active, Disabled, Loadin
 - Editorial "margin notes" become inline callouts
 - Navigation transforms (never disappears)
 
-### Hero Height Guidelines
+**Common Mistake: Overcrowding**
+Designers often try to fit too much "above the fold." This creates cramped, overwhelming layouts. Trust users to scroll — they will if the content is compelling. A bold, spacious hero converts better than a cramped one.
+
+### Hero Height & Impact Guidelines
 
 **Don't use `min-height: 100vh`** — it hides content and feels static.
 
-**Instead:**
+**But heroes still need to be BOLD and IMPACTFUL:**
+
 ```css
-/* Good: Shows content below, invites scrolling */
+/* Good: Generous padding, shows content below */
 .hero {
-  padding: 8rem 0 6rem;  /* Generous but not viewport-filling */
+  padding: 10rem 0 8rem;  /* 160px top, 128px bottom */
 }
 
-/* Good: Responsive height that adapts */
+/* Good: Large but not viewport-trapping */
 .hero {
   min-height: 70vh;
-  max-height: 800px;
+  max-height: 900px;
+  padding: 8rem 0;
+}
+
+/* Good: Responsive hero that scales */
+.hero {
+  padding: clamp(6rem, 15vh, 12rem) 0;
 }
 ```
 
+**Hero typography should be MASSIVE:**
+- Headline: `clamp(3rem, 8vw, 6rem)` or larger
+- Don't be afraid of 100px+ headlines on desktop
+- Let the hero breathe — generous whitespace around headline
+
 **Hero should:**
+- Make an immediate visual impact (bold type, color, imagery, or motion)
 - Show a glimpse of content below (invites scrolling)
-- Scale reasonably on different viewports
-- Not trap users in a static "slide"
+- Have generous internal spacing (not cramped)
+- Feel like a statement, not a form to fill out
 
 ### Typography Minimums (MANDATORY)
 
